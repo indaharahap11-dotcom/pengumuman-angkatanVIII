@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pengumuman Kelulusan - SMA Negeri 1 Tenggulun</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Source Sans 3', sans-serif;
+      background: #ad8442;
+      min-height: 100vh;
+      color: #533e1b;
+      overflow-x: hidden;
+    }
+
+    .bg-pattern {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background:
+        radial-gradient(ellipse at 20% 20%, rgba(180,150,80,0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(100,130,60,0.05) 0%, transparent 50%);
+      pointer-events: none; z-index: 0;
+    }
+
+    .container {
+      position: relative; z-index: 1;
+      max-width: 680px; margin: 0 auto; padding: 2rem 1.5rem;
+      background: rgba(250,246,235,0.6); border-radius: 4px;
+    }
+
+    /* HEADER */
+    .header {
+      text-align: center; padding: 2.5rem 0 2rem;
+      border-bottom: 5px solid rgba(150,120,50,0.3);
+      margin-bottom: 2.5rem;
+    }
+
+    .logo-emblem {
+      width: 148px; height: 148px; margin: 0 auto 1.2rem;
+      background: transparent; border: none; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+
+    .school-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px; font-weight: 700;
+      color: #1a5c28; letter-spacing: 0.5px;
+      line-height: 1.3; margin-bottom: 0.3rem;
+    }
+
+    .school-address {
+      font-size: 12px; color: rgba(30,100,40,0.6);
+      letter-spacing: 1.5px; text-transform: uppercase;
+    }
+
+    /* TITLE */
+    .title-section { text-align: center; margin-bottom: 2.5rem; }
+
+    .title-label {
+      font-size: 24px; letter-spacing: 3px; text-transform: uppercase;
+      color: #1a5c28; margin-bottom: 0.8rem;
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+    }
+    .title-label::before, .title-label::after {
+      content: ''; display: block; height: 1px; width: 40px;
+      background: rgba(30,100,40,0.3);
+    }
+
+    .main-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px; font-weight: 700;
+      color: #1a1a10; line-height: 1.2; margin-bottom: 0.5rem;
+    }
+
+    .year-badge {
+      display: inline-block;
+      background: rgba(30,100,40,0.08);
+      border: 3px solid rgba(30,100,40,0.3);
+      color: #1a5c28; font-size: 13px;
+      padding: 4px 16px; border-radius: 20px;
+      letter-spacing: 1px;
+    }
+
+    /* SEARCH CARD */
+    .search-card {
+      background: rgba(224,172,69,0.65);
+      border: 5px solid rgba(150,120,50,0.2);
+      border-radius: 12px; padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .search-label {
+      font-size: 18px; color: rgba(30,100,40,0.7);
+      letter-spacing: 1px; text-transform: uppercase;
+      margin-bottom: 0.8rem; display: block;
+    }
+
+    .input-row { display: flex; gap: 10px; }
+
+    .nisn-input {
+      flex: 1;
+      background: rgba(255,255,255,0.9);
+      border: 1px solid rgba(150,120,50,0.25);
+      border-radius: 8px;
+      color: #2c2416; font-family: 'Source Sans 3', sans-serif;
+      font-size: 15px; padding: 0.7rem 1rem;
+      outline: none; transition: border-color 0.2s;
+      letter-spacing: 1px;
+    }
+    .nisn-input::placeholder { color: rgba(44,36,22,0.35); font-size: 13px; }
+    .nisn-input:focus { border-color: rgba(30,100,40,0.5); }
+
+    .cek-btn {
+      background: linear-gradient(135deg, #2a7a3a, #1a5c28);
+      border: none; color: #ffffff;
+      font-family: 'Source Sans 3', sans-serif;
+      font-weight: 600; font-size: 14px;
+      padding: 0.7rem 1.4rem; border-radius: 8px;
+      cursor: pointer; transition: opacity 0.2s, transform 0.1s;
+      white-space: nowrap; letter-spacing: 0.5px;
+    }
+    .cek-btn:hover { opacity: 0.9; }
+    .cek-btn:active { transform: scale(0.97); }
+
+    .hint-text {
+      font-size: 12px; color: rgba(44,36,22,0.4);
+      margin-top: 0.6rem;
+    }
+
+    /* RESULT */
+    .result-section { display: none; }
+    .result-section.visible { display: block; animation: fadeUp 0.5s ease; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .result-card {
+      border-radius: 14px; padding: 2rem;
+      margin-bottom: 1.5rem; text-align: center;
+    }
+    .result-card.lulus {
+      background: rgba(15,110,86,0.08);
+      border: 1.5px solid rgba(29,158,117,0.4);
+    }
+    .result-card.tidak-lulus {
+      background: rgba(163,45,45,0.07);
+      border: 1.5px solid rgba(226,75,74,0.3);
+    }
+
+    .result-status-icon { font-size: 48px; margin-bottom: 1rem; display: block; }
+
+    .result-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px; font-weight: 600;
+      color: #1a1a10; margin-bottom: 0.3rem;
+    }
+
+    .result-nisn {
+      font-size: 12px; color: rgba(44,36,22,0.45);
+      letter-spacing: 2px; margin-bottom: 1.5rem;
+    }
+
+    .status-badge {
+      display: inline-block;
+      font-size: 18px; font-weight: 600;
+      font-family: 'Playfair Display', serif;
+      letter-spacing: 1px; padding: 8px 28px;
+      border-radius: 30px; margin-bottom: 1.2rem;
+    }
+    .status-badge.lulus {
+      background: rgba(29,158,117,0.15);
+      color: #0a6644; border: 1px solid rgba(29,158,117,0.4);
+    }
+    .status-badge.tidak-lulus {
+      background: rgba(226,75,74,0.12);
+      color: #8b1a1a; border: 1px solid rgba(226,75,74,0.3);
+    }
+
+    .congrats-text {
+      font-size: 14px; color: rgba(10,8,5,0.65);
+      line-height: 1.6; max-width: 340px; margin: 0 auto;
+    }
+
+    /* INFO GRID */
+    .info-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 12px; margin-top: 1.5rem;
+    }
+
+    .info-item {
+      background: rgba(7,7,7,0.909);
+      border: 1px solid rgba(150,120,50,0.15);
+      border-radius: 12px; padding: 1rem; text-align: left;
+    }
+    .info-item-label {
+      font-size: 18px; text-transform: uppercase;
+      letter-spacing: 1px; color: rgba(0,0,0,0.55);
+      margin-bottom: 0.3rem;
+    }
+    .info-item-value { font-size: 13px; color: #2c2416; }
+
+    /* NOT FOUND */
+    .not-found {
+      background: rgba(255,255,255,0.6);
+      border: 1px solid rgba(150,120,50,0.2);
+      border-radius: 12px; padding: 2rem;
+      text-align: center; color: rgba(44,36,22,0.5);
+      font-size: 14px; line-height: 1.6; display: none;
+    }
+    .not-found.visible { display: block; animation: fadeUp 0.4s ease; }
+
+    /* FOOTER */
+    .footer {
+      text-align: center; padding: 2rem 0 1rem;
+      border-top: 1px solid rgba(0,0,0,0.15);
+      margin-top: 3rem;
+    }
+    .footer-text {
+      font-size: 14px; color: rgba(0,0,0,0.35);
+      letter-spacing: 0.5px; line-height: 2.0;
+    }
+
+    .reset-btn {
+      background: none; border: 1px solid rgba(30,100,40,0.2);
+      color: rgba(30,100,40,0.5); font-family: 'Source Sans 3', sans-serif;
+      font-size: 12px; padding: 6px 16px; border-radius: 20px;
+      cursor: pointer; margin-top: 1rem; transition: all 0.2s;
+    }
+    .reset-btn:hover { border-color: rgba(30,100,40,0.5); color: #1a5c28; }
+
+    /* CONFETTI */
+    .confetti-container {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 999; overflow: hidden;
+    }
+
+    /* ============================================
+       RUNNING FOTO ALUMNI
+    ============================================ */
+    .alumni-section {
+      position: relative;
+      width: 100vw;
+      left: 50%;
+      right: 50%;
+      margin-left: -50vw;
+      margin-right: -50vw;
+      overflow: hidden;
+      background: rgba(0,0,0,0.25);
+      padding: 18px 0;
+      margin-top: 0;
+    }
+
+    .alumni-section-title {
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 13px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 14px;
+    }
+
+    .alumni-track {
+      display: flex;
+      gap: 14px;
+      width: max-content;
+      animation: runningSlide 35s linear infinite;
+    }
+
+    .alumni-track:hover {
+      animation-play-state: paused;
+    }
+
+    @keyframes runningSlide {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .alumni-photo {
+      width: 90px;
+      height: 110px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 2px solid rgba(255,255,255,0.25);
+      display: block;
+      flex-shrink: 0;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+      background: rgba(150,120,50,0.3);
+    }
+
+    .alumni-photo:hover {
+      transform: scale(1.08);
+      border-color: rgba(255,255,255,0.7);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 480px) {
+      .main-title { font-size: 24px; }
+      .input-row { flex-direction: column; }
+      .cek-btn { width: 100%; }
+      .info-grid { grid-template-columns: 1fr; }
+      .alumni-photo { width: 70px; height: 88px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-pattern"></div>
+<div class="confetti-container" id="confetti"></div>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo-emblem">
+      <img src="D:\pengumuman kelulusan\project\logo sman 1 tengguluun.png" alt="Logo SMAN 1 Tenggulun"
+           style="width:150px;height:150px;object-fit:contain;" />
+    </div>
+    <div class="school-name">SMA Negeri 1 Tenggulun</div>
+    <div class="school-address">Kabupaten Aceh Tamiang · Provinsi Aceh</div>
+  </div>
+
+  <!-- JUDUL -->
+  <div class="title-section">
+    <div class="title-label">Pengumuman Resmi</div>
+    <div class="main-title">Kelulusan Siswa</div>
+    <div class="year-badge">Tahun Pelajaran 2025/2026</div>
+  </div>
+
+  <!-- FORM PENCARIAN -->
+  <div class="search-card">
+    <label class="search-label">Masukkan NISN</label>
+    <div class="input-row">
+      <input
+        class="nisn-input"
+        type="text"
+        id="nisnInput"
+        placeholder="Masukkan NISN 10 digit"
+        maxlength="20"
+        onkeydown="if(event.key==='Enter') cekKelulusan()"
+      />
+      <button class="cek-btn" onclick="cekKelulusan()">Cek Kelulusan</button>
+    </div>
+    <div class="hint-text">Gunakan NISN 10 digit yang tertera pada rapor</div>
+  </div>
+
+  <!-- DATA TIDAK DITEMUKAN -->
+  <div class="not-found" id="notFound">
+    Data tidak ditemukan. Periksa kembali NISN Anda,<br />
+    atau hubungi panitia ujian sekolah.
+  </div>
+
+  <!-- HASIL KELULUSAN -->
+  <div class="result-section" id="resultSection">
+    <div class="result-card" id="resultCard">
+      <span class="result-status-icon" id="resultIcon"></span>
+      <div class="result-name" id="resultName"></div>
+      <div class="result-nisn" id="resultNisn"></div>
+      <div class="status-badge" id="statusBadge"></div>
+      <div class="congrats-text" id="congratsText"></div>
+      <div class="info-grid" id="infoGrid"></div>
+    </div>
+    <div style="text-align: center;">
+      <button class="reset-btn" onclick="resetForm()">← Cek NISN lain</button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-text">
+      Pengumuman ini bersifat resmi dan dikeluarkan oleh<br />
+      SMA Negeri 1 Tenggulun, pada 5 Mei 2026 &nbsp;·&nbsp;<br />
+      copyright &copy; 2026 tim IT SMA Negeri 1 Tenggulun. All rights reserved.<br />
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<!-- RUNNING FOTO ALUMNI (full-width, di luar container) -->
+<div class="alumni-section" id="alumniSection">
+  <div class="alumni-section-title">✦ Galeri Alumni Kelas XII · 2025/2026 ✦</div>
+  <div class="alumni-track" id="alumniTrack">
+    <!-- Diisi otomatis oleh JavaScript -->
+  </div>
+</div>
+
+<script>
+  /* ============================================================
+     DAFTAR FOTO ALUMNI
+     Simpan foto di folder "foto/" satu level dengan file HTML ini.
+     Ganti nama file sesuai foto masing-masing siswa.
+  ============================================================ */
+  const fotoAlumni = [
+    "foto/1.jpeg",
+    "foto/2.jpeg",
+    "foto/3.jpeg",
+    "foto/4.jpeg",
+    "foto/5.jpeg",
+    "foto/6.jpeg",
+    "foto/7.jpeg",
+    "foto/8.jpeg",
+    "foto/9.jpeg",
+    "foto/10.jpeg",
+    "foto/11.jpeg",
+    "foto/12.jpeg",
+    "foto/13.jpeg",
+    "foto/14.jpeg",
+    "foto/15.jpeg",
+    "foto/16.jpeg",
+    "foto/17.jpeg",
+    "foto/18.jpeg",
+    /* tambahkan path foto lainnya di sini */
+  ];
+
+  /* Render foto — diduplikat agar loop mulus */
+  (function buildGallery() {
+    const track = document.getElementById('alumniTrack');
+    const allPhotos = [...fotoAlumni, ...fotoAlumni]; // duplikat untuk efek loop mulus
+    allPhotos.forEach(src => {
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = "Foto Alumni";
+      img.className = "alumni-photo";
+      img.onerror = function() {
+        this.style.background = "rgba(150,120,50,0.4)";
+        this.src = "";
+        this.alt = "";
+      };
+      track.appendChild(img);
+    });
+  })();
+
+  /* ============================================================
+     DATA SISWA
+  ============================================================ */
+  const dataSiswa = [
+    { nisn: "0123456789", nama: "Inda Pradinda Harahap", kelas: "XII 5", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0087444565", nama: "ABDI FEBRIAN", kelas: "XII 3", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0087683592", nama: "ADEA DANEJA", kelas: "XII 2", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0081366538", nama: "ADINDA SYAFIRA", kelas: "XII 1", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0078975284", nama: "AFRIZAL", kelas: "XII 3", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0077131272", nama: "AGE WIDINATA", kelas: "XII 4", status: "TIDAK LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0082652580", nama: "AGUS SETIYOSO", kelas: "XII 3", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0086821365", nama: "AHMAD ZAIDAN ZIDNAFAN", kelas: "XII 2", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0089329582", nama: "ALIKA SYABILA", kelas: "XII 3", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0084757642", nama: "AMELIA", kelas: "XII 3", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0089191756", nama: "AMELIA WULAN DARI", kelas: "XII 1", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0089019879", nama: "AMIR RUDIN", kelas: "XII 1", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0083794579", nama: "ANDRA APRILIAN IRLANDI", kelas: "XII 2", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0071920996", nama: "Angga Prandana", kelas: "XII 4", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0085315147", nama: "ANGGI AL THAPUNISA", kelas: "XII 2", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0078741044", nama: "ARIEL", kelas: "XII 2", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0088435954", nama: "AZZKIA NISA MUSTIKA", kelas: "XII 2", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0074828930", nama: "Bagas Kurniawan", kelas: "XII 3", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0084166957", nama: "BINTANG RYO IRAWAN", kelas: "XII 4", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0089465588", nama: "CAMELIA ARIMBI", kelas: "XII 1", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0085873262", nama: "CRINA LESTARI", kelas: "XII 2", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0077696972", nama: "CELSI BALKIS", kelas: "XII 4", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "3095112264", nama: "CINTA AULIA", kelas: "XII 2", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0082650546", nama: "CINTA LAURA", kelas: "XII 4", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0086838583", nama: "CUT NABILA", kelas: "XII 3", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0079597660", nama: "DAFFA", kelas: "XII 1", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0084301693", nama: "DARA INDRILA", kelas: "XII 1", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0084431202", nama: "DEA DIANTI Br Siregar", kelas: "XII 3", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0081668921", nama: "DENO PRABOWO", kelas: "XII 3", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0079671492", nama: "DERI WINATA", kelas: "XII 2", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0077332634", nama: "DESI CAHYANI", kelas: "XII 3", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0082198550", nama: "DIAH NUR SANTI", kelas: "XII 4", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0081014573", nama: "DIAN SIDIQ KALAM", kelas: "XII 1", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0077020521", nama: "DINDA", kelas: "XII 3", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0082968367", nama: "DINDA AMELIA", kelas: "XII 3", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0065603220", nama: "DINDA PRATIKA", kelas: "XII 4", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0083331517", nama: "FADILAH ALI", kelas: "XII 1", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0087056663", nama: "FAHREZI ANDREAN", kelas: "XII 4", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0082527877", nama: "FIRMANSYAH", kelas: "XII 4", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0087989504", nama: "FRENDI SAPUTRA", kelas: "XII 4", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0073364873", nama: "HALIB PIRMANSYAH", kelas: "XII 2", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0087283162", nama: "HAWA HAJRIAH", kelas: "XII 3", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0076048977", nama: "IMANNUDIN", kelas: "XII 4", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0078352996", nama: "JEAN NOVITA", kelas: "XII 4", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0084034542", nama: "JODI IR SHANDI", kelas: "XII 3", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0081757731", nama: "KAREL PRANATA", kelas: "XII 2", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0087191619", nama: "KHAIRAN JAZILA", kelas: "XII 1", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0089974562", nama: "KINANTI PERMATA SARI", kelas: "XII 2", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0095647725", nama: "KINAYA DWI CHAIRANI", kelas: "XII 2", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0076474844", nama: "M HIDAYAT", kelas: "XII 3", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0085463773", nama: "M REZA ARIS PRASETIO", kelas: "XII 2", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0074787495", nama: "M Roisuganda", kelas: "XII 1", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "3080331125", nama: "M. HAFIS IRIANSYAH", kelas: "XII 1", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0081565939", nama: "MAGHFIRA SYAHRINA", kelas: "XII 2", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0083596156", nama: "MALAIKA KUSRIYANI AZ ZAHRA", kelas: "XII 4", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0085788569", nama: "MALIK ALFURQHAN", kelas: "XII 4", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0088634099", nama: "MAULANA PANCA MARDANA", kelas: "XII 1", status: "TIDAK LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0085853759", nama: "MELAN ANGGRAINIELATI", kelas: "XII 4", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0082548139", nama: "MUHAMMAD AKBAR MAULANA", kelas: "XII 1", status: "TIDAK LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0086675508", nama: "MUHAMMAD FARHAN WEYO", kelas: "XII 2", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0084854521", nama: "MUHAMMAD FAZRI", kelas: "XII 3", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0088750885", nama: "MUHAMMAD FIKRI", kelas: "XII 2", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0088642349", nama: "MUHAMMAD TAUFIQ", kelas: "XII 2", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0089814097", nama: "MUHAMMAD YUSUF", kelas: "XII 3", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0089169766", nama: "MUTIARA SAFITRI", kelas: "XII 2", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0085349455", nama: "NABILA RAMADANI", kelas: "XII 4", status: "TIDAK LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0083889752", nama: "NAILA SYAH PUTRI", kelas: "XII 4", status: "TIDAK LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0087023159", nama: "NAUFAL FADHLURROMAN", kelas: "XII 4", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0088780636", nama: "NOVIA ELIANTI", kelas: "XII 1", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0082862331", nama: "NUR FADILLA HANUM", kelas: "XII 1", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0081262875", nama: "Nurdin", kelas: "XII 4", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0066987425", nama: "PITRIYANI", kelas: "XII 2", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0071652079", nama: "PUTRI AGUSTINA", kelas: "XII 4", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0087976983", nama: "Putri Asmiranda", kelas: "XII 3", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0071508392", nama: "PUTRI HANDINI", kelas: "XII 3", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0065619922", nama: "Rama Hidayadi", kelas: "XII 4", status: "TIDAK LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0059109467", nama: "Ramdan Maulana", kelas: "XII 3", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0076204402", nama: "RENGGA NOVRI SUNANTA", kelas: "XII 1", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0083732178", nama: "RENO ALVANDO", kelas: "XII 3", status: "TIDAK LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "3085327597", nama: "REVA", kelas: "XII 1", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0084814460", nama: "RICKI FERDIANSYAH", kelas: "XII 2", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0074633540", nama: "RIDWAN", kelas: "XII 2", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0089269784", nama: "RIFAN FAZAR", kelas: "XII 2", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0076158298", nama: "RIKI IRWANSYAH", kelas: "XII 2", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0086913136", nama: "Riko Ardian", kelas: "XII 1", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0082485684", nama: "Rindu Aulia", kelas: "XII 1", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0074187399", nama: "Risa Zahlia Fitri", kelas: "XII 1", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0083756211", nama: "RISKY PRATAMA", kelas: "XII 3", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0076872288", nama: "ROBBI ANANDA", kelas: "XII 3", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0077701859", nama: "ROBBI PRATAMA", kelas: "XII 3", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0083658741", nama: "ROMADHONA SIREGAR", kelas: "XII 1", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0084039702", nama: "Santika Dewi", kelas: "XII 4", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0083658741", nama: "ROHMAH NUR AZIZAH", kelas: "XII 2", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0075036402", nama: "SARI", kelas: "XII 3", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0084959862", nama: "SATRIA ABY PUTRA", kelas: "XII 1", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0072000899", nama: "SELIANA", kelas: "XII 1", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0086297057", nama: "SINDI DWI AULIA", kelas: "XII 4", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0072040738", nama: "SITI KHODIJAH", kelas: "XII 2", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0087846745", nama: "SITI SALWA", kelas: "XII 1", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0071495563", nama: "Suci Muliana", kelas: "XII 1", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0075478318", nama: "Suriya", kelas: "XII 4", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0083658741", nama: "SURYANI", kelas: "XII 4", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0085655255", nama: "Syah Aura Resti", kelas: "XII 4", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0083274681", nama: "Syahrani", kelas: "XII 1", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0088107649", nama: "TI MILZATI", kelas: "XII 4", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0072686368", nama: "Tiara Audia", kelas: "XII 1", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0087976031", nama: "VINZA ADMAHZA", kelas: "XII 2", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0073172397", nama: "WINDA SARI", kelas: "XII 4", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0083275161", nama: "WIRA SAHPUTRA", kelas: "XII 4", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0082320769", nama: "WULANDARI", kelas: "XII 3", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0072324635", nama: "ZASKIA OKTARIANI", kelas: "XII 4", status: "LULUS", tanggal: "5 Mei 2025" },
+    { nisn: "0082762890", nama: "NOVIA RAMANDA", kelas: "XII 1", status: "LULUS", tanggal: "5 Mei 2025" },
+  ];
+
+  /* ============================================================
+     FUNGSI CEK KELULUSAN
+  ============================================================ */
+  function cekKelulusan() {
+    const val = document.getElementById('nisnInput').value.trim();
+    const resultSection = document.getElementById('resultSection');
+    const notFound      = document.getElementById('notFound');
+
+    resultSection.classList.remove('visible');
+    notFound.classList.remove('visible');
+
+    if (!val) return;
+
+    const siswa = dataSiswa.find(s => s.nisn === val);
+
+    if (!siswa) {
+      notFound.classList.add('visible');
+      return;
+    }
+
+    const isLulus = siswa.status === "LULUS";
+
+    document.getElementById('resultIcon').textContent = isLulus ? '🏆' : '📋';
+    document.getElementById('resultName').textContent  = siswa.nama;
+    document.getElementById('resultNisn').textContent  = 'NISN: ' + siswa.nisn;
+
+    const badge = document.getElementById('statusBadge');
+    badge.textContent = siswa.status;
+    badge.className   = 'status-badge ' + (isLulus ? 'lulus' : 'tidak-lulus');
+
+    const card = document.getElementById('resultCard');
+    card.className = 'result-card ' + (isLulus ? 'lulus' : 'tidak-lulus');
+
+    document.getElementById('congratsText').textContent = isLulus
+      ? 'Selamat! Anda dinyatakan LULUS dari SMA Negeri 1 Tenggulun. Semoga sukses melanjutkan perjalanan ke jenjang berikutnya.'
+      : 'Anda belum dinyatakan lulus pada tahun pelajaran ini. Silakan hubungi pihak sekolah untuk informasi lebih lanjut.';
+
+    document.getElementById('infoGrid').innerHTML = `
+      <div class="info-item">
+        <div class="info-item-label">Kelas</div>
+        <div class="info-item-value">${siswa.kelas}</div>
+      </div>
+      <div class="info-item">
+        <div class="info-item-label">Tanggal Pengumuman</div>
+        <div class="info-item-value">${siswa.tanggal}</div>
+      </div>
+      <div class="info-item">
+        <div class="info-item-label">NISN</div>
+        <div class="info-item-value">${siswa.nisn}</div>
+      </div>
+      <div class="info-item">
+        <div class="info-item-label">Sekolah</div>
+        <div class="info-item-value">SMAN 1 Tenggulun</div>
+      </div>
+    `;
+
+    resultSection.classList.add('visible');
+    if (isLulus) launchConfetti();
+  }
+
+  /* ============================================================
+     FUNGSI RESET FORM
+  ============================================================ */
+  function resetForm() {
+    document.getElementById('nisnInput').value = '';
+    document.getElementById('resultSection').classList.remove('visible');
+    document.getElementById('notFound').classList.remove('visible');
+    document.getElementById('confetti').innerHTML = '';
+  }
+
+  /* ============================================================
+     EFEK KONFETI
+  ============================================================ */
+  function launchConfetti() {
+    const container = document.getElementById('confetti');
+    container.innerHTML = '';
+    const colors = ['#2a7a3a', '#c8a84b', '#5dcaa5', '#1a5c28', '#f0c040'];
+
+    for (let i = 0; i < 100; i++) {
+      const el       = document.createElement('div');
+      const size     = Math.random() * 8 + 4;
+      const delay    = Math.random() * 1.5;
+      const duration = Math.random() * 2 + 2;
+      const drift    = (Math.random() - 0.5) * 200;
+
+      el.style.cssText = `
+        position: absolute;
+        width: ${size}px; height: ${size}px;
+        background: ${colors[Math.floor(Math.random() * colors.length)]};
+        left: ${Math.random() * 100}%;
+        top: -10px;
+        border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+        opacity: ${Math.random() * 0.8 + 0.2};
+        animation: confettiFall ${duration}s ease-in ${delay}s forwards;
+        --drift: ${drift}px;
+      `;
+      container.appendChild(el);
+    }
+
+    if (!document.getElementById('confettiStyle')) {
+      const style = document.createElement('style');
+      style.id = 'confettiStyle';
+      style.textContent = `
+        @keyframes confettiFall {
+          to {
+            top: 110%;
+            transform: rotate(720deg) translateX(var(--drift));
+            opacity: 0;
+          }
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    setTimeout(() => { container.innerHTML = ''; }, 5000);
+  }
+</script>
+
+</body>
+</html>
